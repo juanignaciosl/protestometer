@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.2.3/leaflet.draw.js"></script>
+
+    <link rel="stylesheet" href="protestometer.css" />
+    <script src="protestometer_helpers.js"></script>
+    <script src="protestometer_service.js"></script>
+    <script src="protestometer.js"></script>
+    <script>
+    //var credentials = {
+    //  user_name: 'juanignaciosl',
+    //  api_key: 'c4b07c83e117f47d027d88d3e3b82f6a1367971a'
+    //}
+    var credentials = {
+      table_prefix: 'pom',
+      user_name: '',
+      api_key: '',
+      organization_name: 'team'
+    }
+    </script>
+  </head>
+  <body onload="initProtestometer(credentials, 'protestometer')">
+    <div id="protestometer"></div>
+  </body>
+</html>

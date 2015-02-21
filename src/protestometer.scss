@@ -1,0 +1,179 @@
+$margin-1: 10px;
+$margin-2: 20px;
+$margin-3: 30px;
+$margin-4: 40px;
+$margin-5: 50px;
+
+$padding-1: 2px;
+
+$font-size-1: 14px;
+$font-size-2: 22px;
+$font-size-3: 30px;
+$font-size-4: 38px;
+
+$white: #DDDDDD;
+
+@mixin full-sized {
+  width: 100%; 
+  height: 100%; 
+}
+
+@mixin leaflet-like-bar {
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+@mixin leaflet-like-button {
+  text-align: center;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+
+  &:last-child {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-bottom: none;
+  }
+
+  &:hover, &.selected {
+    background-color: #e4e4e4;
+  }
+}
+
+html, body {
+  @include full-sized;
+  padding: 0; 
+  margin: 0; 
+  font-family: Helvetica, sans-serif;
+  font-size: font-size-1;
+  color: #666666;
+}
+
+h1 {
+  font-size: $font-size-4;
+}
+
+button {
+  cursor: pointer;
+}
+
+.cartodb-searchbox {
+  right: $margin-4;
+}
+
+#protestometer {
+  @include full-sized;
+}
+
+.protestometer {
+  @include full-sized;
+  position: relative;
+
+  & > * {
+    position: absolute;
+  }
+
+  .protest-picker {
+    z-index: 300;
+    background: rgba(0, 0, 0, .8);
+    color: white;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    padding: 20%;
+    text-align: center;
+
+    h2 {
+      margin-top: $margin-4;
+    }
+
+    label {
+      display: block;
+      margin: $margin-2;
+      font-size: $font-size-2;
+
+      input {
+        margin-left: $margin-1;
+        font-size: $font-size-2;
+      }
+    }
+
+    button {
+      padding: $margin-2;
+      font-size: $font-size-2;
+    }
+
+    ul {
+      margin-top: $margin-3;
+      font-size: $font-size-2;
+      max-height: 10 * $font-size-2;
+      overflow-y: scroll;
+      background: rgba(0, 0, 0, .1);
+
+      li {
+        display: block;
+        list-style-type: none;
+        padding: $margin-1;
+      }
+      li:hover {
+        padding: $margin-1 - 1px;
+        border: 1px dotted $white;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .protest-editor {
+    @include full-sized;
+    $z-index-editor: 100;
+
+    & > * {
+      position: absolute;
+      z-index: $z-index-editor + 1;
+    }
+
+    h1 {
+      top: $margin-1;
+      left: $margin-5;
+    }
+
+    .back {
+      top: $margin-1;
+      right: $margin-1;
+      font-size: $font-size-4;
+      cursor: pointer;
+    }
+
+    .map-container {
+      @include full-sized;
+      z-index: $z-index-editor;
+
+      & > * {
+        @include full-sized;
+      }
+    }
+
+    .density-selector {
+      top: 200px;
+      left: 10px;
+      @include leaflet-like-bar;
+
+      .density-item {
+        @include leaflet-like-button;
+        width: inherit;
+        white-space: nowrap;
+        padding: 0 $padding-1;
+
+        .unit {
+          font-size: 50%;
+        }
+      }
+    }
+  }
+
+}
