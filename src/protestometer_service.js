@@ -15,8 +15,16 @@ function protestometerService(credentials) {
 
   var CHECK_BACKEND_SQL = "select count(1) from pg_class where relname = '" + base_table + "'";
   var PROTESTS_TABLE_COLUMNS = "id, name, created_at"; 
-  var LOAD_PROTESTS_SQL = "select " + PROTESTS_TABLE_COLUMNS + " from " + protests_table + " order by created_at desc";
+  var LOAD_PROTEST_SQL = "select " + PROTESTS_TABLE_COLUMNS + ", "
+    + " (SELECT round(cast(sum(ST_Area(the_geom::geography)) as numeric), 2) from " + areas_table + " where protest_id = p.id ) as total_area, "
+    + " (SELECT round(cast(sum(ST_Area(the_geom::geography) * density) as numeric), 2) from " + areas_table + " where protest_id = p.id ) as people_count "
+    + " from " + protests_table + " p ";
+  var LOAD_PROTESTS_SQL = LOAD_PROTEST_SQL + " order by created_at desc";
   var COUNT_AREAS_SQL = "select count(1) from " + areas_table;
+
+  function loadProtestSql(protest) {
+    return LOAD_PROTEST_SQL + " where p.id = " + protest.id;
+  }
 
   function insertProtestSql(name) {
     return "insert into " + protests_table + " (name) values ('" + name + "') returning " + PROTESTS_TABLE_COLUMNS;
@@ -109,7 +117,9 @@ function protestometerService(credentials) {
     },
     newArea: function(protest, density, geoJSON, callback, errorCallback) {
       api.query(insertAreaSql(protest, density, geoJSON), function(response) {
-        safe_callback(callback, response);
+        api.query(loadProtestSql(protest), function(response) {
+          safe_callback(callback, response.rows[0]);
+        }, errorCallback);
       }, errorCallback);
     },
     loadProtestLayer: function(protest, map, callback, errorCallback) {
@@ -118,8 +128,7 @@ function protestometerService(credentials) {
         type: 'cartodb',
         sublayers: [{
           sql: "SELECT * FROM " + areas_table + " where protest_id = " + protest.id,
-          cartocss: '#' + areas_table + ' { marker-fill: #F0F0F0; }'
-                + densitiesCartocss(protest.densities)
+          cartocss: densitiesCartocss(protest.densities)
         }]
       })
       .addTo(map)

@@ -85,7 +85,7 @@ button {
     left: 0;
     right: 0;
     z-index: 1200;
-    padding: 20%;
+    padding: 10%;
     text-align: center;
 
     h2 {
@@ -137,9 +137,12 @@ button {
       z-index: $z-index-editor + 1;
     }
 
-    h1 {
+    .protest-info {
+      background: rgba(0, 0, 0, .8);
+      color: $white;
       top: $margin-1;
       left: $margin-5;
+      padding: $margin-1;
     }
 
     .back {

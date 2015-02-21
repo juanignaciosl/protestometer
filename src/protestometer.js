@@ -3,7 +3,8 @@ var LABELS = {
   ENTER_PROTEST_NAME: 'Enter new protest name',
   LIST_TITLE: '... or pick an existing protest',
   DENSITY_OPTION_TITLE: 'Click to choose density',
-  PERMISSION_HINT: 'Please go to your CartoDB account and make that table public'
+  PERMISSION_HINT: 'Please go to your CartoDB account and make that table public',
+  PEOPLE: 'people'
 }
 
 function hints(error) {
@@ -128,9 +129,15 @@ function createProtestEditor(service, callback, errorCallback) {
         map = theMap;
       });
     },
+    loadProtestInfo: function(protest) {
+      totalArea.innerHTML = protest.total_area + " m<sup>2</sup>"
+      peopleCount.innerHTML = protest.people_count + " " + LABELS.PEOPLE;
+    },
     loadProtest: function(protest) {
+                   console.log(protest);
       editor.clearLayers();
       title.innerText = protest.name;
+      editor.loadProtestInfo(protest);
       editor.protest = protest;
       protest.densities = editor.densities;
       editor.loadProtestLayer(protest);
@@ -213,12 +220,16 @@ function createProtestEditor(service, callback, errorCallback) {
     var geoJSON = JSON.stringify(layer.toGeoJSON().geometry);
     editor.clearLayers();
     service.newArea(editor.protest, editor.density, geoJSON, function(response) {
+      editor.loadProtestInfo(response);
       editor.loadProtestLayer(editor.protest);
     }, errorCallback);
 
   }
 
-  var title = appendChild('h1', protestEditor, 'title');
+  var protestInfo = appendChildDiv(protestEditor, 'info', 'protest-info');
+  var title = appendChild('h1', protestInfo, 'title');
+  var totalArea = appendChildDiv(protestInfo, 'total-area');
+  var peopleCount = appendChildDiv(protestInfo, 'people-count');
 
   loadDensities(protestEditor, function(densities) {
     editor.densities = densities;

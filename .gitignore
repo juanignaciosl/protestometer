@@ -1,2 +1,3 @@
 .*.swp
 src/.sass-cache
+src/credentials.js

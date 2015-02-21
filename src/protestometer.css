@@ -35,7 +35,7 @@ button {
     left: 0;
     right: 0;
     z-index: 1200;
-    padding: 20%;
+    padding: 10%;
     text-align: center; }
     .protestometer .protest-picker h2 {
       margin-top: 40px; }
@@ -69,9 +69,12 @@ button {
     .protestometer .protest-editor > * {
       position: absolute;
       z-index: 101; }
-    .protestometer .protest-editor h1 {
+    .protestometer .protest-editor .protest-info {
+      background: rgba(0, 0, 0, 0.8);
+      color: #dddddd;
       top: 10px;
-      left: 50px; }
+      left: 50px;
+      padding: 10px; }
     .protestometer .protest-editor .back {
       top: 10px;
       right: 10px;
