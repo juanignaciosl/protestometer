@@ -130,8 +130,10 @@ function createProtestEditor(service, callback, errorCallback) {
       });
     },
     loadProtestInfo: function(protest) {
-      totalArea.innerHTML = protest.total_area + " m<sup>2</sup>"
-      peopleCount.innerHTML = protest.people_count + " " + LABELS.PEOPLE;
+      var total_info = typeof protest.total_area === 'undefined' ? 0 : protest.total_area;
+      var people_count = typeof protest.people_count === 'undefined' ? 0 : protest.people_count;
+      totalArea.innerHTML = total_info + " m<sup>2</sup>"
+      peopleCount.innerHTML = people_count + " " + LABELS.PEOPLE;
     },
     loadProtest: function(protest) {
                    console.log(protest);
