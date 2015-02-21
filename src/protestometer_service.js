@@ -7,6 +7,8 @@ function safe_callback(callback, arg) {
 }
 
 function protestometerService(credentials) {
+  var sql = new cartodb.SQL({ user: credentials.user_name });
+
   var table_prefix = typeof credentials.table_prefix === 'undefined' ? 'pom' : credentials.table_prefix;
 
   var base_table = table_prefix + '_protestometer'
@@ -136,6 +138,12 @@ function protestometerService(credentials) {
         safe_callback(callback, layer);
       })
       .on('error', errorCallback);
+    },
+    getBounds: function(protest, callback, errorCallback) {
+      sql.getBounds("select the_geom from " + areas_table + " where protest_id = " + protest.id)
+        .done(function(bounds) {
+          callback(bounds);
+        });
     }
   }
 

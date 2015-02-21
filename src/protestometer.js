@@ -1,3 +1,5 @@
+var MAX_ZOOM = 18;
+
 var LABELS = {
   TITLE: 'Protest-o-meter',
   ENTER_PROTEST_NAME: 'Enter new protest name',
@@ -136,7 +138,12 @@ function createProtestEditor(service, callback, errorCallback) {
       peopleCount.innerHTML = people_count + " " + LABELS.PEOPLE;
     },
     loadProtest: function(protest) {
-                   console.log(protest);
+      service.getBounds(protest, function(bounds) {
+        map.fitBounds(bounds);
+        if(map.getZoom() < MAX_ZOOM) {
+          map.setZoom(MAX_ZOOM);
+        }
+      });
       editor.clearLayers();
       title.innerText = protest.name;
       editor.loadProtestInfo(protest);
@@ -178,7 +185,7 @@ function createProtestEditor(service, callback, errorCallback) {
     var id = mapDiv.id;
     var map = new L.Map(id, {
       center: [41.652044, -4.728007],
-      zoom: 18
+      zoom: MAX_ZOOM
     });
 
     var baseLayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
